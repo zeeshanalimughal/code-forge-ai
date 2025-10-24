@@ -29,9 +29,6 @@ export function middleware(request: NextRequest) {
   // Better Auth creates cookies with the prefix we defined
   const cookies = request.cookies.getAll();
   
-  // Log cookies for debugging (remove in production)
-  console.log('All cookies:', cookies.map(c => c.name));
-  
   // Check for session cookie - Better Auth uses format: {prefix}.session_token
   const hasSessionCookie = cookies.some(cookie => 
     cookie.name.includes('session') || 
@@ -40,11 +37,8 @@ export function middleware(request: NextRequest) {
     cookie.name.startsWith('better-auth')
   );
 
-  console.log('Has session cookie:', hasSessionCookie);
-
   // Redirect unauthenticated users to home
   if (!hasSessionCookie) {
-    console.log('No session found, redirecting to home');
     return NextResponse.redirect(new URL('/', request.url));
   }
 
